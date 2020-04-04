@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Information Rev1</string>
+    <string name="welcome_to_informtt">Welcome to InformTT</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="continue_as_guest">Continue as Guest</string>
+    <string name="random_knowledge">Random Knowledge</string>
+    <string name="loading_please_wait">Loading...please wait...</string>
+    <string name="please_enter_your_name">Please enter your name</string>
+    <string name="please_enter_your_email_address">Please enter your email address</string>
+    <string name="please_enter_your_password">Please enter your password</string>
+    <string name="please_re_enter_your_password">Please re-enter your password</string>
+    <string name="please_enter_your_date_of_birth">Please enter your Date of Birth</string>
+</resources>

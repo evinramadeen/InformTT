@@ -1,0 +1,2 @@
+rootProject.name='Information Rev2'
+include ':app'
