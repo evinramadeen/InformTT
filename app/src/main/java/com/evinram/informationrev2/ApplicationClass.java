@@ -5,6 +5,8 @@ import android.app.Application;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 
+import java.util.List;
+
 public class ApplicationClass extends Application
 {
     public static final String APPLICATION_ID = "734ACFB0-309D-78CE-FF65-7C0903FC2500";
@@ -12,6 +14,7 @@ public class ApplicationClass extends Application
     public static final String SERVER_URL = "https://api.backendless.com";
 
     public static BackendlessUser user;
+    public static List<Category> categories;
 
     @Override
     public void onCreate()

@@ -2,6 +2,7 @@ package com.evinram.informationrev2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ public class RandomActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 Toast.makeText(RandomActivity.this, "Button Pressed", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(RandomActivity.this,MainCategories.class));
             }
         });
     }
