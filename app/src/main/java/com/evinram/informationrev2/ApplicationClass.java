@@ -15,6 +15,7 @@ public class ApplicationClass extends Application
 
     public static BackendlessUser user;
     public static List<Category> categories;
+    public static List<SubCategory> subCategories;
 
     @Override
     public void onCreate()

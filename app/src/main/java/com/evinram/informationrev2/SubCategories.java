@@ -1,14 +1,10 @@
 package com.evinram.informationrev2;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -24,122 +20,72 @@ import com.backendless.persistence.DataQueryBuilder;
 
 import java.util.List;
 
-public class MainCategories extends AppCompatActivity
+public class SubCategories extends AppCompatActivity
 {
     ListView lvList;
     private View mProgressView;
     private View mLoginFormView;
     private TextView tvLoad;
-
-    CategoryAdapter adapter;
+    SubCategoryAdapter subAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_categories);
+        setContentView(R.layout.activity_sub_categories);
+
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         tvLoad = findViewById(R.id.tvLoad);
-
         lvList = findViewById(R.id.lvList);
-        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+
+       /* lvList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Intent intent = new Intent(MainCategories.this,SubCategories.class);
-                intent.putExtra("index",position);
-                intent.putExtra("main_category",ApplicationClass.categories.get(position).getMain_category());
-                startActivityForResult(intent,1);
+
             }
-        });
+        });*/
 
+        final int index = getIntent().getIntExtra("index",0);
+        final String mainCategory = getIntent().getStringExtra("main_category");
 
-        DataQueryBuilder queryBuilder = DataQueryBuilder.create(); //creates the query builder
-        queryBuilder.setGroupBy("main_category");// how i want to sort the data basically.
+        String whereClause ="main_category = '"+ mainCategory+"'";
+
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause(whereClause);
+        queryBuilder.setGroupBy("sub_category");
 
         showProgress(true);
-        tvLoad.setText("Retrieving data, please wait!");
+        tvLoad.setText("Getting " + mainCategory+" subcategories, please wait...");
 
-        Backendless.Data.of(Category.class).find(queryBuilder, new AsyncCallback<List<Category>>()
+        Backendless.Persistence.of(SubCategory.class).find(queryBuilder, new AsyncCallback<List<SubCategory>>()
         {
             @Override
-            public void handleResponse(List<Category> response)
+            public void handleResponse(List<SubCategory> response)
             {
-                ApplicationClass.categories=response;
-                adapter = new CategoryAdapter(MainCategories.this, ApplicationClass.categories);
-                lvList.setAdapter(adapter);
+                ApplicationClass.subCategories=response;
+                subAdapter=new SubCategoryAdapter(SubCategories.this,ApplicationClass.subCategories);
+                lvList.setAdapter(subAdapter);
                 showProgress(false);
+
             }
 
             @Override
             public void handleFault(BackendlessFault fault)
             {
-                Toast.makeText(MainCategories.this, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SubCategories.this, "Error: "+fault.getMessage(), Toast.LENGTH_SHORT).show();
                 showProgress(false);
+
             }
         });
 
     }
 
-    @Override
-    public void onBackPressed()
-    {
-        final AlertDialog.Builder dialog2 = new AlertDialog.Builder(MainCategories.this);
-
-        dialog2.setMessage("Do you want to Exit or Logout and Exit?");
-        dialog2.setPositiveButton("Logout and Exit.", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog2, int which)
-            {
-                Backendless.UserService.logout(new AsyncCallback<Void>()
-                {
-                    @Override
-                    public void handleResponse(Void response)
-                    {
-                        Toast.makeText(MainCategories.this, "User Successfully logged out.", Toast.LENGTH_SHORT).show();
-                        MainCategories.this.finish();
-
-                    }
-
-                    @Override
-                    public void handleFault(BackendlessFault fault)
-                    {
-                        Toast.makeText(MainCategories.this, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-            }
-        });
-
-        dialog2.setNegativeButton("Exit Only", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog2, int which)
-            {
-                MainCategories.this.finish();
-
-            }
-        });
-        dialog2.show();
 
 
-
-    }
-//i actually dont think this would be required as the user will not be allowed to actually edit any data.
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode==1)
-        {
-            adapter.notifyDataSetChanged();
-        }
-    }
 
     /**
      * Shows the progress UI and hides the login form.
