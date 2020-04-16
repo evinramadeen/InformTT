@@ -52,7 +52,7 @@ public class MainCategories extends AppCompatActivity
                 Intent intent = new Intent(MainCategories.this,SubCategories.class);
                 intent.putExtra("index",position);
                 intent.putExtra("main_category",ApplicationClass.categories.get(position).getMain_category());
-                startActivityForResult(intent,1);
+                startActivity(intent);
             }
         });
 
@@ -130,16 +130,7 @@ public class MainCategories extends AppCompatActivity
 
     }
 //i actually dont think this would be required as the user will not be allowed to actually edit any data.
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==1)
-        {
-            adapter.notifyDataSetChanged();
-        }
-    }
 
     /**
      * Shows the progress UI and hides the login form.

@@ -35,13 +35,14 @@ public class RandomActivity extends AppCompatActivity
         final TextView tvTest = findViewById(R.id.tvTest);
         //tvSeeMore = findViewById(R.id.tvSeeMore);
 
+
         btnNothing.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 Toast.makeText(RandomActivity.this, "Button Pressed", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(RandomActivity.this,MainCategories.class));
+                startActivity(new Intent(RandomActivity.this,FullDescription.class));
             }
         });
 
@@ -60,7 +61,7 @@ public class RandomActivity extends AppCompatActivity
         else if(orientation == Configuration.ORIENTATION_PORTRAIT && text.length()>50)
         {
 
-            dispText=text.substring(0,50) + "... see More";;
+            dispText=text.substring(0,50) + "... see More";
             spanning=Boolean.TRUE;
         }
 
@@ -81,6 +82,8 @@ public class RandomActivity extends AppCompatActivity
                 public void onClick(@NonNull View widget)
                 {
                     Toast.makeText(RandomActivity.this, "Click Registered. Start New Activity", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(RandomActivity.this, FullDescription.class));
+
                 }
             };
 
@@ -101,6 +104,8 @@ public class RandomActivity extends AppCompatActivity
         {
             tvTest.setText(text);
         }
+
+
 
 
 

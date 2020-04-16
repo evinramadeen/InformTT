@@ -1,11 +1,18 @@
 package com.evinram.informationrev2;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +33,7 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent)
     {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -35,9 +42,14 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
         TextView tvSubCategory =convertView.findViewById(R.id.tvSubCategory);
         final TextView tvSubDescription = convertView.findViewById(R.id.tvSubDescription);
 
-        tvSubCategory.setText(subCategories.get(position).getSub_category());
-        tvSubDescription.setText(subCategories.get(position).getFull_description());
 
+        //puts the text on the sub category
+        final String subNameHold= subCategories.get(position).getSub_category();
+        final String holdText=subCategories.get(position).getFull_description();
+        tvSubCategory.setText(subCategories.get(position).getSub_category());
+        //tvSubDescription.setText(subCategories.get(position).getFull_description());this is the original way of setting the description without see more
+
+        //creates the on click function to show the subcategory description
         tvSubCategory.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -54,6 +66,36 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
 
             }
         });
+
+        int textLength=0;
+        String dispText="";
+
+        textLength=holdText.length();
+        dispText = holdText.substring(0,textLength)+"... See More"; //this is only for testing, when large description is entered, use a value of 75 instead of textLength.
+
+
+
+        SpannableString ss = new SpannableString(dispText);
+
+        ClickableSpan clickableSpan = new ClickableSpan()
+        {
+            @Override
+            public void onClick(@NonNull View widget)
+            {
+                Intent intent = new Intent(context, FullDescription.class);
+                intent.putExtra("sub_category", subNameHold);
+                intent.putExtra("full_description",holdText);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                Toast.makeText(context, "Click Registered on item "+ subNameHold, Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        ss.setSpan(clickableSpan,textLength,textLength+12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvSubDescription.setText(ss);
+        tvSubDescription.setMovementMethod(LinkMovementMethod.getInstance());
+
+
 
         return convertView;
     }
