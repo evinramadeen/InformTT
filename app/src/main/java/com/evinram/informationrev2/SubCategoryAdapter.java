@@ -87,16 +87,17 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
                 intent.putExtra("full_description",holdText);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                Toast.makeText(context, "Click Registered on item "+ subNameHold, Toast.LENGTH_SHORT).show();
             }
         };
 
         ss.setSpan(clickableSpan,textLength,textLength+12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvSubDescription.setText(ss);
         tvSubDescription.setMovementMethod(LinkMovementMethod.getInstance());
-
+//I have noticed an issue where the see more can be clicked on a blank part after the see more. Dont forget to find a way to fix that.
 
 
         return convertView;
     }
+
+
 }

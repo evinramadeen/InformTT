@@ -11,4 +11,6 @@
     <string name="please_enter_your_password">Please enter your password</string>
     <string name="please_re_enter_your_password">Please re-enter your password</string>
     <string name="please_enter_your_date_of_birth">Please enter your Date of Birth</string>
+    <string name="favorite">Favorite</string>
+    <string name="text_size">Text Size</string>
 </resources>

@@ -151,51 +151,7 @@ public class Login extends AppCompatActivity
             }
         });
 //will have to move this into my main activity page so that if he is already logged in, would go straight to the main categories xml page.
-        showProgress(true);
-        tvLoad.setText("Checking Login Credentials. Please wait!");
-        //this runs before the on click listeners
-        Backendless.UserService.isValidLogin(new AsyncCallback<Boolean>() {
-            @Override
-            public void handleResponse(Boolean response)
-            {
-                if(response) //if its a valid login from before
-                {
-                    //in order to get the user we do the following
-                    String userObjectId = UserIdStorageFactory.instance().getStorage().get();//this is linked to the stay logged in option we chose on the login button
 
-                    tvLoad.setText("Logging you in, Please wait!");
-                    Backendless.Data.of(BackendlessUser.class).findById(userObjectId, new AsyncCallback<BackendlessUser>() {
-                        @Override
-                        public void handleResponse(BackendlessUser response)
-                        {//if it is a valid login
-                            ApplicationClass.user = response; //if he is already logged in, still link the user to the contacts.
-                            startActivity(new Intent(Login.this,MainCategories.class));
-                            Login.this.finish();//closes the login activity
-                        }
-
-                        @Override
-                        public void handleFault(BackendlessFault fault)
-                        {
-                            Toast.makeText(Login.this, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
-                            showProgress(false);
-
-                        }
-                    });
-                }
-                else
-                {
-                    showProgress(false);
-                }
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault)
-            {
-                Toast.makeText(Login.this, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
-                showProgress(false);
-
-            }
-        });
     }
 
 

@@ -1,5 +1,6 @@
 package com.evinram.informationrev2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.Animator;
@@ -7,7 +8,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +29,9 @@ public class FullDescription extends AppCompatActivity
     private View mLoginFormView;
     private TextView tvLoad;
     String responseHandler;
+    public int hidden=0;
+
+    ImageView ivFavorite;
 
     TextView tvSubCategory, tvDescription;
 
@@ -39,6 +47,8 @@ public class FullDescription extends AppCompatActivity
 
         tvDescription = findViewById(R.id.tvDescription);
         tvSubCategory = findViewById(R.id.tvSubCategory);
+        ivFavorite = findViewById(R.id.ivFavorite);
+
 
         String subCategory = getIntent().getStringExtra("sub_category");
         String fullDescrip = getIntent().getStringExtra("full_description");
@@ -46,10 +56,52 @@ public class FullDescription extends AppCompatActivity
         tvSubCategory.setText(subCategory);
         tvDescription.setText(fullDescrip);
 
+        ivFavorite.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+            }
+        });
+
 
 
     }
 
+    //Here is where I am going to put the action bar method. This action bar is being used to record if the user has favorited any data as well as
+    //allows him to change the font. I have not determined if i will also record their choice of font. Should at least try to maintain it throughout
+    //the different activities for that session.
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.sub_descript, menu);
+
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
+
+        switch (item.getItemId())
+        {
+            case R.id.add_favorite:
+                Toast.makeText(this, "Add favorite clicked", Toast.LENGTH_SHORT).show();
+                item.setVisible(false);
+
+            break;
+
+            case R.id.text_size:
+                Toast.makeText(this, "Text Size clicked, Will work on this code", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * Shows the progress UI and hides the login form.
