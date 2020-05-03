@@ -81,7 +81,7 @@ public class Login extends AppCompatActivity
                         @Override
                         public void handleResponse(BackendlessUser response)
                         {
-                            ApplicationClass.user = response; //this is what we do to link the user to their own list of contacts. their own tables basically.
+                            ApplicationClass.user = response; //this is what we do to link the user to their own tables basically. I am using this for the favorites feature
                             Toast.makeText(Login.this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
 
                             startActivity(new Intent(Login.this, MainCategories.class));

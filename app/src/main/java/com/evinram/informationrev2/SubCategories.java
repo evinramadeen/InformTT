@@ -41,14 +41,6 @@ public class SubCategories extends AppCompatActivity
         tvLoad = findViewById(R.id.tvLoad);
         lvList = findViewById(R.id.lvList);
 
-       /* lvList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-
-            }
-        });*/
 
         final int index = getIntent().getIntExtra("index",0);
         final String mainCategory = getIntent().getStringExtra("main_category");
@@ -61,7 +53,7 @@ public class SubCategories extends AppCompatActivity
 
         showProgress(true);
         tvLoad.setText("Getting " + mainCategory+" subcategories, please wait...");
-
+        //Get and display the sub categories.
         Backendless.Persistence.of(SubCategory.class).find(queryBuilder, new AsyncCallback<List<SubCategory>>()
         {
             @Override

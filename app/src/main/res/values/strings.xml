@@ -13,4 +13,8 @@
     <string name="please_enter_your_date_of_birth">Please enter your Date of Birth</string>
     <string name="favorite">Favorite</string>
     <string name="text_size">Text Size</string>
+    <string name="favorite_selected">Favorite Selected</string>
+    <string name="favorite_not_selected">Favorite Not Selected</string>
+    <string name="fetching_fav">Fetching your favorites. Please wait...</string>
+    <string name="main_categories">Main Categories</string>
 </resources>

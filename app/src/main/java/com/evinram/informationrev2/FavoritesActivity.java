@@ -1,19 +1,13 @@
 package com.evinram.informationrev2;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,54 +17,50 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainCategories extends AppCompatActivity
+public class FavoritesActivity extends AppCompatActivity
 {
     ListView lvList;
     private View mProgressView;
     private View mLoginFormView;
     private TextView tvLoad;
+    String userEmail;
 
-    CategoryAdapter adapter;
+
+    FavoritesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_categories);
-
+        setContentView(R.layout.activity_favorites);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         tvLoad = findViewById(R.id.tvLoad);
 
-        lvList = findViewById(R.id.lvList);
-        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                Intent intent = new Intent(MainCategories.this,SubCategories.class);
-                intent.putExtra("index",position);
-                intent.putExtra("main_category",ApplicationClass.categories.get(position).getMain_category());
-                startActivity(intent);
-            }
-        });
+        lvList=findViewById(R.id.lvList);
 
-
-        DataQueryBuilder queryBuilder = DataQueryBuilder.create(); //creates the query builder
-        queryBuilder.setGroupBy("main_category");// how i want to sort the data basically.
-
+        //Next I am going to try to set up something that determines which values are favorited already.
+        userEmail=ApplicationClass.user.getEmail();
+        String whereClause = "userEmail = '" +userEmail+"'";
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause(whereClause);
+        queryBuilder.setGroupBy("sub_category");
         showProgress(true);
-        tvLoad.setText("Retrieving data, please wait!");
+        tvLoad.setText(R.string.fetching_fav);
 
-        Backendless.Data.of(Category.class).find(queryBuilder, new AsyncCallback<List<Category>>()
+
+        //Make sure and include a check for when the user has no favorites, a text view can be displayed telling them
+        //how to add to favorites.
+        Backendless.Data.of(Favorites.class).find(queryBuilder, new AsyncCallback<List<Favorites>>()
         {
             @Override
-            public void handleResponse(List<Category> response)
+            public void handleResponse(List<Favorites> response)
             {
-                ApplicationClass.categories=response;
-                adapter = new CategoryAdapter(MainCategories.this, ApplicationClass.categories);
+                ApplicationClass.favorites=response;
+                adapter=new FavoritesAdapter(FavoritesActivity.this,ApplicationClass.favorites);
                 lvList.setAdapter(adapter);
                 showProgress(false);
             }
@@ -78,61 +68,12 @@ public class MainCategories extends AppCompatActivity
             @Override
             public void handleFault(BackendlessFault fault)
             {
-                Toast.makeText(MainCategories.this, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FavoritesActivity.this, "Error: " +fault.getMessage(), Toast.LENGTH_SHORT).show();
                 showProgress(false);
+
             }
         });
-
     }
-
-    @Override
-    public void onBackPressed()
-    {
-        final AlertDialog.Builder dialog2 = new AlertDialog.Builder(MainCategories.this);
-
-        dialog2.setMessage("Do you want to Exit or Logout and Exit?");
-        dialog2.setPositiveButton("Logout and Exit.", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog2, int which)
-            {
-                Backendless.UserService.logout(new AsyncCallback<Void>()
-                {
-                    @Override
-                    public void handleResponse(Void response)
-                    {
-                        Toast.makeText(MainCategories.this, "User Successfully logged out.", Toast.LENGTH_SHORT).show();
-                        MainCategories.this.finish();
-
-                    }
-
-                    @Override
-                    public void handleFault(BackendlessFault fault)
-                    {
-                        Toast.makeText(MainCategories.this, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-            }
-        });
-
-        dialog2.setNegativeButton("Exit Only", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog2, int which)
-            {
-                MainCategories.this.finish();
-
-            }
-        });
-        dialog2.show();
-
-
-
-    }
-//i actually dont think this would be required as the user will not be allowed to actually edit any data.
-
-
     /**
      * Shows the progress UI and hides the login form.
      */
@@ -180,3 +121,4 @@ public class MainCategories extends AppCompatActivity
     }
 
 }
+

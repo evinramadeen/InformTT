@@ -44,6 +44,7 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
 
 
         //puts the text on the sub category
+        final String mainCatHold = subCategories.get(position).getMain_category();
         final String subNameHold= subCategories.get(position).getSub_category();
         final String holdText=subCategories.get(position).getFull_description();
         tvSubCategory.setText(subCategories.get(position).getSub_category());
@@ -74,7 +75,8 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
         dispText = holdText.substring(0,textLength)+"... See More"; //this is only for testing, when large description is entered, use a value of 75 instead of textLength.
 
 
-
+//This is what I use to make the see more clickable and subsequently go to the new activity when clicked. I also send the data that was clicked to the next activity.
+        //I may have to review if it is a good idea to send the data through an intent when my data gets large.
         SpannableString ss = new SpannableString(dispText);
 
         ClickableSpan clickableSpan = new ClickableSpan()
@@ -83,6 +85,7 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
             public void onClick(@NonNull View widget)
             {
                 Intent intent = new Intent(context, FullDescription.class);
+                intent.putExtra("main_category",mainCatHold);
                 intent.putExtra("sub_category", subNameHold);
                 intent.putExtra("full_description",holdText);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

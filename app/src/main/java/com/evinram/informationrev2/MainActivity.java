@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void handleResponse(BackendlessUser response)
                         {//if it is a valid login
-                            ApplicationClass.user = response; //if he is already logged in, still link the user to the contacts.
+                            ApplicationClass.user = response; //if he is already logged in, still link the user to the different tables, in this case favorites function.
                             startActivity(new Intent(MainActivity.this,MainCategories.class));
                             MainActivity.this.finish();//closes the login activity
                         }
