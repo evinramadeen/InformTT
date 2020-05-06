@@ -7,6 +7,34 @@
     android:layout_height="match_parent"
     tools:context=".RandomActivity">
 
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="200dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvLoad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_horizontal"
+        android:text="@string/loading_please_wait"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
     <Button
         android:id="@+id/btnNothing"
         android:layout_width="match_parent"
@@ -14,30 +42,53 @@
         android:layout_weight="0"
         android:text="Button" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tvTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="0"
-            android:text="TextView"
-            android:ellipsize="end"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvSeeMore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:clickable="true"
-            android:text="... See More"
-            android:textColor="#EF4E4E"
-            android:textStyle="italic"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/tvTest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="0"
+                android:ellipsize="end"
+                android:text="TextView" />
+
+            <RadioGroup
+                android:id="@+id/radioText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0">
+
+                <RadioButton
+                    android:id="@+id/radioSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Small Text"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/radioMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Medium Text"
+                    android:textColor="#000000"
+                    android:textSize="22sp" />
+
+                <RadioButton
+                    android:id="@+id/radioLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Large Text"
+                    android:textColor="#000000"
+                    android:textSize="28sp" />
+            </RadioGroup>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

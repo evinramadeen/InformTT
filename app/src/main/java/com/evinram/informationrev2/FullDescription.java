@@ -2,6 +2,7 @@ package com.evinram.informationrev2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FullDescription extends AppCompatActivity
+public class FullDescription extends AppCompatActivity implements SingleChoiceDialogFragment.SingleChoiceListener
 {
 
     private View mProgressView;
@@ -210,7 +211,7 @@ public class FullDescription extends AppCompatActivity
 
     }
 
-    //Here is where I am going to put the action bar method. This action bar is being used to record if the user has favorited any data as well as
+    //Here is where I am going to put the action bar method. This action bar is being used to let the user view his favorites as well as
     //allows him to change the font. I have not determined if i will also record their choice of font. Should at least try to maintain it throughout
     //the different activities for that session.
 
@@ -219,9 +220,6 @@ public class FullDescription extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.sub_descript, menu);
-
-
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -232,18 +230,56 @@ public class FullDescription extends AppCompatActivity
         switch (item.getItemId())
         {
             case R.id.favorite:
-                Toast.makeText(this, "Add favorite clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing your current favorites.", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(FullDescription.this,FavoritesActivity.class));
 
             break;
 
             case R.id.text_size:
-                Toast.makeText(this, "Text Size clicked, Will work on this code", Toast.LENGTH_SHORT).show();
+                DialogFragment singleChoiceDialog = new SingleChoiceDialogFragment();
+                singleChoiceDialog.setCancelable(false);
+                singleChoiceDialog.show(getSupportFragmentManager(),"Single Choice Dialog");
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    //Below is the onPositive button and on negative button clicked functions for the dialog. It is how I pass the info
+    //back into this activity basically.
+    //The text is now being selected by the user to maintain consistence throughout the program. This selection is done during registration.
+    //If the user uses the application class to change the text size, it would call on Backendless and edit the value of text size in the table for the entire program
+    @Override
+    public void onPositiveButtonClicked(String[] list, int position)
+    {
+        String updateTextSize="";
+
+        switch (list[position])
+        {
+            case "Small Text":
+                updateTextSize="Small";
+                break;
+            case "Medium Text":
+                updateTextSize="Medium";
+                break;
+            case "Large Text":
+                updateTextSize="Large";
+                break;
+            default:
+                updateTextSize="Medium";
+
+        }
+
+
+
+
+    }
+
+    @Override
+    public void onNegativeButtonClicked()
+    {
+        Toast.makeText(this, "Font Size not changed.", Toast.LENGTH_SHORT).show();
+
+    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -290,4 +326,6 @@ public class FullDescription extends AppCompatActivity
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
+
+
 }

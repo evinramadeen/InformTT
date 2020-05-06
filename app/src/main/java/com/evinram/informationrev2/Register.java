@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +32,12 @@ public class Register extends AppCompatActivity
     private View mLoginFormView;
     private TextView tvLoad;
 
-    EditText etName, etPassword, etEmail, etReEnter,etDOB;
+
+    EditText etFirstName,etLastName, etPassword, etEmail, etReEnter,etDOB;
     Button btnRegister;
     DatePickerDialog picker;
+    RadioGroup radioGroup;
+    RadioButton radioButton;
 
 
     @Override
@@ -53,7 +58,8 @@ public class Register extends AppCompatActivity
         mProgressView = findViewById(R.id.login_progress);
         tvLoad = findViewById(R.id.tvLoad);
 
-        etName = findViewById(R.id.etName);
+        etFirstName = findViewById(R.id.etFirstName);
+        etLastName = findViewById(R.id.etLastName);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etReEnter = findViewById(R.id.etReEnter);
@@ -78,13 +84,17 @@ public class Register extends AppCompatActivity
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
                             {
-                                etDOB.setText((month+1)+ "/"+ dayOfMonth  + "/" + year);
+                                etDOB.setText((month+1)+ "/"+ (dayOfMonth)  + "/" + year);
 
                             }
                         },year,month,day);
                 picker.show();
             }
         });
+
+        //Below deals with the radio group used to allow the user to change the text size if they want from the start.
+        radioGroup = findViewById(R.id.radioText);
+
 
 
         btnRegister= findViewById(R.id.btnRegister);
@@ -93,7 +103,7 @@ public class Register extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                if(etName.getText().toString().isEmpty() ||etEmail.getText().toString().isEmpty()||
+                if(etFirstName.getText().toString().isEmpty() ||etLastName.getText().toString().isEmpty()||etEmail.getText().toString().isEmpty()||
                         etPassword.getText().toString().isEmpty()||etReEnter.getText().toString().isEmpty()||etDOB.getText().toString().isEmpty())
                 {
                     Toast.makeText(Register.this, "Please enter all details", Toast.LENGTH_SHORT).show();
@@ -102,20 +112,46 @@ public class Register extends AppCompatActivity
                 {
                     if(etPassword.getText().toString().trim().equals(etReEnter.getText().toString().trim()))
                     {
-                        String name = etName.getText().toString().trim();
+                        String firstName = etFirstName.getText().toString().trim();
+                        String lastName = etLastName.getText().toString().trim();
                         String password= etPassword.getText().toString().trim();
                         String email = etEmail.getText().toString().trim();
                         String birthdate = etDOB.getText().toString().trim();
+                        String textSize;
+                        int selectedId = radioGroup.getCheckedRadioButtonId();
+                        radioButton = findViewById(selectedId);
+                        String chosenText = radioButton.getText().toString().trim();
+
+                        //The next if statement is to determine which text size did the user select. There may be a smoother way.
+                        switch(chosenText)
+                        {
+
+                            case "Large Text":
+                                textSize="Large";
+                                break;
+
+                                //Medium is not checked for because it is the default size.
+
+                            case "Small Text":
+                                textSize = "Small";
+                                break;
+
+                            default:
+                               textSize="Medium";
+                               break;
+                        }
 
 
                         BackendlessUser user = new BackendlessUser();
                         user.setEmail(email);
                         user.setPassword(password); //encrypts and saves to backendless
-                        user.setProperty("name",name); //the name of the column must match the column in backendless
+                        user.setProperty("firstName",firstName); //the name of the column must match the column in backendless
+                        user.setProperty("lastName",lastName);
                         user.setProperty("birthdate",birthdate);
+                        user.setProperty("text_size",textSize);
 
                         showProgress(true);
-                        tvLoad.setText("Busy Registering new user, Please Wait");
+                        tvLoad.setText(R.string.registering_new_user);
 
                         Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>()
                         {
@@ -151,6 +187,8 @@ public class Register extends AppCompatActivity
 
 
     }
+
+
 
     /**
      * Shows the progress UI and hides the login form.

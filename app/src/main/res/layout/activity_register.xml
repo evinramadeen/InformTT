@@ -37,7 +37,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/etName"
+            android:id="@+id/etFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -46,7 +46,23 @@
             android:autofillHints="Name"
             android:ems="10"
             android:gravity="center_horizontal"
-            android:hint="@string/please_enter_your_name"
+            android:hint="@string/please_enter_your_first_name"
+            android:inputType="textPersonName"
+            android:textColor="#000000"
+            android:textColorHint="@color/hintColor"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/etLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:autofillHints="Name"
+            android:ems="10"
+            android:gravity="center_horizontal"
+            android:hint="@string/please_enter_your_last_name"
             android:inputType="textPersonName"
             android:textColor="#000000"
             android:textColorHint="@color/hintColor"
@@ -113,6 +129,54 @@
             android:textColor="#000000"
             android:textColorHint="@color/hintColor"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center_horizontal"
+            android:text="@string/please_select_your_preferred_text_size"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/radioText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="0"
+            android:background="#FAF7F7"
+            android:fadeScrollbars="false">
+
+            <RadioButton
+                android:id="@+id/radioSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Small Text"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/radioMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Medium Text"
+                android:textColor="#000000"
+                android:textSize="22sp" />
+
+            <RadioButton
+                android:id="@+id/radioLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Large Text"
+                android:textColor="#000000"
+                android:textSize="28sp" />
+        </RadioGroup>
 
         <Button
             android:id="@+id/btnRegister"

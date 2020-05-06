@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
                     //in order to get the user we do the following
                     String userObjectId = UserIdStorageFactory.instance().getStorage().get();//gets the object id for the user we want to have logged in
 
-                    tvLoad.setText("Logging you in, Please wait!");
+                    tvLoad.setText(R.string.logging_in);
                     Backendless.Data.of(BackendlessUser.class).findById(userObjectId, new AsyncCallback<BackendlessUser>() {
                         @Override
                         public void handleResponse(BackendlessUser response)

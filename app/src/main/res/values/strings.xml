@@ -6,7 +6,8 @@
     <string name="continue_as_guest">Continue as Guest</string>
     <string name="random_knowledge">Random Knowledge</string>
     <string name="loading_please_wait">Loading...please wait...</string>
-    <string name="please_enter_your_name">Please enter your name</string>
+    <string name="please_enter_your_first_name">Please enter your first name</string>
+    <string name="please_enter_your_last_name">Please enter your last name</string>
     <string name="please_enter_your_email_address">Please enter your email address</string>
     <string name="please_enter_your_password">Please enter your password</string>
     <string name="please_re_enter_your_password">Please re-enter your password</string>
@@ -17,4 +18,14 @@
     <string name="favorite_not_selected">Favorite Not Selected</string>
     <string name="fetching_fav">Fetching your favorites. Please wait...</string>
     <string name="main_categories">Main Categories</string>
+    <string name="show_favorites">Show Favorites.</string>
+    <string name="retrieving_data_please_wait">Retrieving data, please wait!</string>
+    <string name="please_select_your_preferred_text_size">Please select your preferred text size:</string>
+    <string name="registering_new_user">Busy Registering new user, Please Wait</string>
+    <string name="logging_in">Logging you in, Please wait!</string>
+    <string-array name="text_size_choice">
+        <item>Small Text</item>
+        <item>Medium Text</item>
+        <item>Large Text</item>
+    </string-array>
 </resources>

@@ -17,6 +17,7 @@ public class CategoryAdapter extends ArrayAdapter<Category>
 {
     private Context context;
     private List<Category> categories;
+    String textSize;
 
     public CategoryAdapter(Context context, List<Category> list)
     {
@@ -24,6 +25,8 @@ public class CategoryAdapter extends ArrayAdapter<Category>
         this.context = context;
         this.categories=list;
     }
+
+
 
     @NonNull
     @Override
@@ -37,6 +40,26 @@ public class CategoryAdapter extends ArrayAdapter<Category>
         TextView tvMainCat = convertView.findViewById(R.id.tvMainCat);
         TextView tvSubCat = convertView.findViewById(R.id.tvSubCat);
 
+        textSize = ApplicationClass.user.getProperty("text_size").toString();
+        switch (textSize)
+        {
+            case "Small":
+                tvMainCat.setTextSize(20);
+                tvSubCat.setTextSize(14);
+                break;
+            case "Medium":
+                tvMainCat.setTextSize(28);
+                tvSubCat.setTextSize(20);
+                break;
+            case "Large":
+                tvMainCat.setTextSize(36);
+                tvSubCat.setTextSize(28);
+                break;
+            default:
+                tvMainCat.setTextSize(24);
+                tvSubCat.setTextSize(16);
+                break;
+        }
         tvMainCat.setText(categories.get(position).getMain_category());
         tvSubCat.setText(categories.get(position).getSub_categories());
         String tempPhoto = categories.get(position).getPhoto(); //getting the string from the database with what image should be shown
@@ -62,4 +85,6 @@ public class CategoryAdapter extends ArrayAdapter<Category>
 
         return convertView;
     }
+
+
 }
