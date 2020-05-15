@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
@@ -35,8 +36,8 @@ public class FullDescription extends AppCompatActivity implements SingleChoiceDi
     private View mLoginFormView;
     private TextView tvLoad;
     String userEmail;
-    int subCategoryIndex; //used to determine what is the index of the subcategory so i can find the objectId
-    String objectId; //Used for the remove favorite function
+    String textSize;
+    String mainCategory;
 
 
     ImageView ivFavorite;
@@ -50,7 +51,6 @@ public class FullDescription extends AppCompatActivity implements SingleChoiceDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_description);
 
-
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         tvLoad = findViewById(R.id.tvLoad);
@@ -62,10 +62,30 @@ public class FullDescription extends AppCompatActivity implements SingleChoiceDi
 //holdfavorites is the list that will hold the sub categories that the user has already favorited.
         final List<String> holdfavorite = new ArrayList<String>();
 
-        final String mainCategory = getIntent().getStringExtra("main_category");
+        mainCategory = getIntent().getStringExtra("main_category");
         final String subCategory = getIntent().getStringExtra("sub_category");
-        String fullDescrip = getIntent().getStringExtra("full_description");
+        final String fullDescrip = getIntent().getStringExtra("full_description");
 
+        textSize = ApplicationClass.user.getProperty("text_size").toString();
+        switch (textSize)
+        {
+            case "Small":
+                tvSubCategory.setTextSize(20);
+                tvDescription.setTextSize(14);
+                break;
+            case "Medium":
+                tvSubCategory.setTextSize(28);
+                tvDescription.setTextSize(20);
+                break;
+            case "Large":
+                tvSubCategory.setTextSize(36);
+                tvDescription.setTextSize(28);
+                break;
+            default:
+                tvSubCategory.setTextSize(24);
+                tvDescription.setTextSize(16);
+                break;
+        }
         //set the information that i passed in from the subCategoryAdapter activity to the text views
         tvSubCategory.setText(subCategory);
         tvDescription.setText(fullDescrip);
@@ -123,6 +143,7 @@ public class FullDescription extends AppCompatActivity implements SingleChoiceDi
                 Favorites favorite = new Favorites();
                 favorite.setMain_category(mainCategory);
                 favorite.setSub_category(subCategory);
+                favorite.setFull_description(fullDescrip);
                 favorite.setUserEmail(ApplicationClass.user.getEmail());
 
                 showProgress(true);
@@ -211,14 +232,11 @@ public class FullDescription extends AppCompatActivity implements SingleChoiceDi
 
     }
 
-    //Here is where I am going to put the action bar method. This action bar is being used to let the user view his favorites as well as
-    //allows him to change the font. I have not determined if i will also record their choice of font. Should at least try to maintain it throughout
-    //the different activities for that session.
 
-
+    //This is for the action bar.
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
-    {
+    {//to change the action bar items for each diff page, make a different layout in the menu folder.
         getMenuInflater().inflate(R.menu.sub_descript, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -226,14 +244,14 @@ public class FullDescription extends AppCompatActivity implements SingleChoiceDi
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item)
     {
-
         switch (item.getItemId())
         {
             case R.id.favorite:
                 Toast.makeText(this, "Showing your current favorites.", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(FullDescription.this,FavoritesActivity.class));
+                finish();
 
-            break;
+                break;
 
             case R.id.text_size:
                 DialogFragment singleChoiceDialog = new SingleChoiceDialogFragment();
@@ -244,32 +262,65 @@ public class FullDescription extends AppCompatActivity implements SingleChoiceDi
         return super.onOptionsItemSelected(item);
     }
 
-    //Below is the onPositive button and on negative button clicked functions for the dialog. It is how I pass the info
-    //back into this activity basically.
-    //The text is now being selected by the user to maintain consistence throughout the program. This selection is done during registration.
-    //If the user uses the application class to change the text size, it would call on Backendless and edit the value of text size in the table for the entire program
+
+    //the buttons that go along with the change text size alert dialog.
     @Override
     public void onPositiveButtonClicked(String[] list, int position)
     {
-        String updateTextSize="";
 
+        String newTextSize=""; //just initializing it to make an error go away.
+
+//This switch case is used in conjunction with the alert dialog that comes up when the Text edit button is pressed in the action view.
         switch (list[position])
         {
             case "Small Text":
-                updateTextSize="Small";
+                newTextSize="Small";
                 break;
+
             case "Medium Text":
-                updateTextSize="Medium";
+                newTextSize="Medium";
                 break;
+
             case "Large Text":
-                updateTextSize="Large";
+                newTextSize="Large";
                 break;
-            default:
-                updateTextSize="Medium";
+
 
         }
+//If the user is trying to change it to a text size he already uses, it makes no sense.
+        if (ApplicationClass.user.getProperty("text_size").equals(newTextSize))
+        {
+            Toast.makeText(this, "Your preferred text size is already "+newTextSize, Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            //Updating the user preferred text size
 
+            showProgress(true);
+            tvLoad.setText("Changing your text preference throughout the app...");
 
+            ApplicationClass.user.setProperty("text_size",newTextSize);
+            Backendless.UserService.update(ApplicationClass.user, new AsyncCallback<BackendlessUser>()
+            {
+                @Override
+                public void handleResponse(BackendlessUser response)
+                {
+                    Toast.makeText(FullDescription.this, "New Text size is: "+ApplicationClass.user.getProperty("text_size"), Toast.LENGTH_SHORT).show();
+                    showProgress(false);
+                    finish();
+                    overridePendingTransition(0,0);
+                    startActivity(getIntent());
+                    overridePendingTransition(0,0);
+                }
+
+                @Override
+                public void handleFault(BackendlessFault fault)
+                {
+                    Toast.makeText(FullDescription.this, "Error: "+fault.getMessage(), Toast.LENGTH_SHORT).show();
+                    showProgress(false);
+                }
+            });
+        }
 
 
     }
@@ -279,6 +330,17 @@ public class FullDescription extends AppCompatActivity implements SingleChoiceDi
     {
         Toast.makeText(this, "Font Size not changed.", Toast.LENGTH_SHORT).show();
 
+    }
+
+    //I am adding an OnBackPressed option because Main Category would not refresh and change the font size if user presses back from this activity.
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(FullDescription.this,SubCategories.class);
+        intent.putExtra("main_category",mainCategory);
+        startActivity(intent);
+        finish();
     }
 
     /**

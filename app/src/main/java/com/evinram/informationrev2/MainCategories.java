@@ -68,6 +68,7 @@ public class MainCategories extends AppCompatActivity implements SingleChoiceDia
                 intent.putExtra("index",position);
                 intent.putExtra("main_category",ApplicationClass.categories.get(position).getMain_category());
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -145,9 +146,8 @@ public class MainCategories extends AppCompatActivity implements SingleChoiceDia
 
 
     }
-//i actually dont think this would be required as the user will not be allowed to actually edit any data.
 
-
+//This is for the action bar.
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {//to change the action bar items for each diff page, make a different layout in the menu folder.
@@ -175,6 +175,8 @@ public class MainCategories extends AppCompatActivity implements SingleChoiceDia
         return super.onOptionsItemSelected(item);
     }
 
+
+    //the buttons that go along with the change text size alert dialog.
     @Override
     public void onPositiveButtonClicked(String[] list, int position)
     {

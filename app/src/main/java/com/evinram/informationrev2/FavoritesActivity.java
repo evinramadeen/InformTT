@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +44,21 @@ public class FavoritesActivity extends AppCompatActivity
 
         lvList=findViewById(R.id.lvList);
 
+        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Intent intent = new Intent(FavoritesActivity.this,FullDescription.class);
+                intent.putExtra("main_category",ApplicationClass.favorites.get(position).getMain_category());
+                intent.putExtra("sub_category", ApplicationClass.favorites.get(position).getSub_category());
+                intent.putExtra("full_description",ApplicationClass.favorites.get(position).getFull_description());
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
         //Next I am going to try to set up something that determines which values are favorited already.
         userEmail=ApplicationClass.user.getEmail();
         String whereClause = "userEmail = '" +userEmail+"'";
@@ -73,6 +90,13 @@ public class FavoritesActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        startActivity(new Intent(FavoritesActivity.this,MainCategories.class));
+        finish();
     }
     /**
      * Shows the progress UI and hides the login form.

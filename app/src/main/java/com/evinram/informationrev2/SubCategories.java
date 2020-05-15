@@ -1,13 +1,17 @@
 package com.evinram.informationrev2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,13 +19,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 
 import java.util.List;
 
-public class SubCategories extends AppCompatActivity
+public class SubCategories extends AppCompatActivity implements SingleChoiceDialogFragment.SingleChoiceListener
 {
     ListView lvList;
     private View mProgressView;
@@ -77,7 +82,111 @@ public class SubCategories extends AppCompatActivity
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {//to change the action bar items for each diff page, make a different layout in the menu folder.
+        getMenuInflater().inflate(R.menu.sub_descript, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.favorite:
+                Toast.makeText(this, "Showing your current favorites.", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SubCategories.this,FavoritesActivity.class));
+                finish();
+
+                break;
+
+            case R.id.text_size:
+                DialogFragment singleChoiceDialog = new SingleChoiceDialogFragment();
+                singleChoiceDialog.setCancelable(false);
+                singleChoiceDialog.show(getSupportFragmentManager(),"Single Choice Dialog");
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //the buttons that go along with the change text size alert dialog.
+    @Override
+    public void onPositiveButtonClicked(String[] list, int position)
+    {
+        String newTextSize=""; //just initializing it to make an error go away.
+
+//This switch case is used in conjunction with the alert dialog that comes up when the Text edit button is pressed in the action view.
+        switch (list[position])
+        {
+            case "Small Text":
+                newTextSize="Small";
+                break;
+
+            case "Medium Text":
+                newTextSize="Medium";
+                break;
+
+            case "Large Text":
+                newTextSize="Large";
+                break;
+
+
+        }
+//If the user is trying to change it to a text size he already uses, it makes no sense.
+        if (ApplicationClass.user.getProperty("text_size").equals(newTextSize))
+        {
+            Toast.makeText(this, "Your preferred text size is already "+newTextSize, Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            //Updating the user preferred text size
+
+            showProgress(true);
+            tvLoad.setText("Changing your text preference throughout the app...");
+
+            ApplicationClass.user.setProperty("text_size",newTextSize);
+            Backendless.UserService.update(ApplicationClass.user, new AsyncCallback<BackendlessUser>()
+            {
+                @Override
+                public void handleResponse(BackendlessUser response)
+                {
+                    Toast.makeText(SubCategories.this, "New Text size is: "+ApplicationClass.user.getProperty("text_size"), Toast.LENGTH_SHORT).show();
+                    showProgress(false);
+                    finish();
+                    overridePendingTransition(0,0);
+                    startActivity(getIntent());
+                    overridePendingTransition(0,0);
+                }
+
+                @Override
+                public void handleFault(BackendlessFault fault)
+                {
+                    Toast.makeText(SubCategories.this, "Error: "+fault.getMessage(), Toast.LENGTH_SHORT).show();
+                    showProgress(false);
+                }
+            });
+        }
+
+
+
+    }
+
+    @Override
+    public void onNegativeButtonClicked()
+    {
+        Toast.makeText(this, "Font Size not changed.", Toast.LENGTH_SHORT).show();
+
+    }
+
+//I am adding an OnBackPressed option because Main Category would not refresh and change the font size if user presses back from this activity.
+
+    @Override
+    public void onBackPressed()
+    {
+        startActivity(new Intent(SubCategories.this,MainCategories.class));
+        finish();
+    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -124,5 +233,6 @@ public class SubCategories extends AppCompatActivity
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
+
 
 }

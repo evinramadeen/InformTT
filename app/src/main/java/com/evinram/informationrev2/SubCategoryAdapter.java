@@ -1,5 +1,6 @@
 package com.evinram.informationrev2;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -23,6 +24,7 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
 {
     private Context context;
     private List<SubCategory> subCategories;
+    String textSize;//Used to store the text size from the Users table in the database
 
     public SubCategoryAdapter(Context context, List<SubCategory> list)
     {
@@ -42,7 +44,28 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
         TextView tvSubCategory =convertView.findViewById(R.id.tvSubCategory);
         final TextView tvSubDescription = convertView.findViewById(R.id.tvSubDescription);
 
+        //Next I am going to put in the functionality to change text size.
+        textSize=ApplicationClass.user.getProperty("text_size").toString();
 
+        switch (textSize)
+        {
+            case "Small":
+                tvSubCategory.setTextSize(20);
+                tvSubDescription.setTextSize(14);
+                break;
+            case "Medium":
+                tvSubCategory.setTextSize(28);
+                tvSubDescription.setTextSize(20);
+                break;
+            case "Large":
+                tvSubCategory.setTextSize(36);
+                tvSubDescription.setTextSize(28);
+                break;
+            default:
+                tvSubCategory.setTextSize(24);
+                tvSubDescription.setTextSize(16);
+                break;
+        }
         //puts the text on the sub category
         final String mainCatHold = subCategories.get(position).getMain_category();
         final String subNameHold= subCategories.get(position).getSub_category();
@@ -84,12 +107,13 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
             @Override
             public void onClick(@NonNull View widget)
             {
-                Intent intent = new Intent(context, FullDescription.class);
-                intent.putExtra("main_category",mainCatHold);
-                intent.putExtra("sub_category", subNameHold);
-                intent.putExtra("full_description",holdText);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                Intent intents = new Intent(context, FullDescription.class);
+                intents.putExtra("main_category",mainCatHold);
+                intents.putExtra("sub_category", subNameHold);
+                intents.putExtra("full_description",holdText);
+                intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intents);
+                ((Activity)context).finish();//This is how i end an activity in an adapter. Had to typecast it too an activity so that i could use the finish class.
             }
         };
 

@@ -7,6 +7,7 @@ public class Favorites
     private String userEmail;
     private String main_category;
     private String sub_category;
+    private String full_description;
     private Date created;
     private Date updated;
     private String objectId;
@@ -39,6 +40,16 @@ public class Favorites
     public void setSub_category(String sub_category)
     {
         this.sub_category = sub_category;
+    }
+
+    public String getFull_description()
+    {
+        return full_description;
+    }
+
+    public void setFull_description(String full_description)
+    {
+        this.full_description = full_description;
     }
 
     public Date getCreated()

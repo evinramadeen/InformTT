@@ -17,7 +17,7 @@ public class CategoryAdapter extends ArrayAdapter<Category>
 {
     private Context context;
     private List<Category> categories;
-    String textSize;
+    String textSize;//Used to store the text size from the Users table in the database
 
     public CategoryAdapter(Context context, List<Category> list)
     {
@@ -39,7 +39,7 @@ public class CategoryAdapter extends ArrayAdapter<Category>
         ImageView ivCategory = convertView.findViewById(R.id.ivCategory);
         TextView tvMainCat = convertView.findViewById(R.id.tvMainCat);
         TextView tvSubCat = convertView.findViewById(R.id.tvSubCat);
-
+//Next I am going to put in the functionality to change text size.
         textSize = ApplicationClass.user.getProperty("text_size").toString();
         switch (textSize)
         {
