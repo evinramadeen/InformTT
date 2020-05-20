@@ -65,6 +65,9 @@ public class FullDescription extends AppCompatActivity implements SingleChoiceDi
         mainCategory = getIntent().getStringExtra("main_category");
         final String subCategory = getIntent().getStringExtra("sub_category");
         final String fullDescrip = getIntent().getStringExtra("full_description");
+        //Since I am changing the tables to the Text format, I am going to try and pull the full description from the sub_categories table instead of passing it using intents
+
+
 
         textSize = ApplicationClass.user.getProperty("text_size").toString();
         switch (textSize)
@@ -195,9 +198,10 @@ public class FullDescription extends AppCompatActivity implements SingleChoiceDi
                         Toast.makeText(FullDescription.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
                         ivFavorite.setVisibility(View.GONE);
                         ivNotFav.setVisibility(View.VISIBLE);
-                        showProgress(false);
                         finish();
+                        overridePendingTransition(0,0);
                         startActivity(getIntent());
+                        overridePendingTransition(0,0);
                     }
 
                     @Override
@@ -337,9 +341,9 @@ public class FullDescription extends AppCompatActivity implements SingleChoiceDi
     @Override
     public void onBackPressed()
     {
-        Intent intent = new Intent(FullDescription.this,SubCategories.class);
-        intent.putExtra("main_category",mainCategory);
-        startActivity(intent);
+        Intent intentFull = new Intent(FullDescription.this,SubCategories.class);
+        intentFull.putExtra("main_category",mainCategory);
+        startActivity(intentFull);
         finish();
     }
 

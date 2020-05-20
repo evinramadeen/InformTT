@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Information Rev2</string>
+    <string name="app_name">InformTT</string>
     <string name="welcome_to_informtt">Welcome to InformTT</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="continue_as_guest">Continue as Guest</string>
     <string name="random_knowledge">Random Knowledge</string>
-    <string name="loading_please_wait">Loading...please wait...</string>
+    <string name="loading_please_wait">Loading…please wait…</string>
     <string name="please_enter_your_first_name">Please enter your first name</string>
     <string name="please_enter_your_last_name">Please enter your last name</string>
     <string name="please_enter_your_email_address">Please enter your email address</string>
@@ -16,7 +16,7 @@
     <string name="text_size">Text Size</string>
     <string name="favorite_selected">Favorite Selected</string>
     <string name="favorite_not_selected">Favorite Not Selected</string>
-    <string name="fetching_fav">Fetching your favorites. Please wait...</string>
+    <string name="fetching_fav">Fetching your favorites. Please wait…</string>
     <string name="main_categories">Main Categories</string>
     <string name="show_favorites">Show Favorites.</string>
     <string name="retrieving_data_please_wait">Retrieving data, please wait!</string>

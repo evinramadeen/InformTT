@@ -1,5 +1,7 @@
 package com.evinram.informationrev2;
 
+import org.w3c.dom.Text;
+
 import java.util.Date;
 
 public class Favorites

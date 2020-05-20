@@ -18,7 +18,10 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.local.UserIdStorageFactory;
+import com.backendless.push.DeviceRegistrationResult;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity
         {
             @Override
             public void onClick(View v) {
+
                 startActivity(new Intent(MainActivity.this, RandomActivity.class));
                 MainActivity.this.finish();
             }

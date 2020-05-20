@@ -47,7 +47,7 @@ public class SubCategories extends AppCompatActivity implements SingleChoiceDial
         lvList = findViewById(R.id.lvList);
 
 
-        final int index = getIntent().getIntExtra("index",0);
+        //final int index = getIntent().getIntExtra("index",0);
         final String mainCategory = getIntent().getStringExtra("main_category");
 
         String whereClause ="main_category = '"+ mainCategory+"'";

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "656875226817",
+    "firebase_url": "https://informtt-e1ff8.firebaseio.com",
+    "project_id": "informtt-e1ff8",
+    "storage_bucket": "informtt-e1ff8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656875226817:android:ff9a7f11c5505d7b657640",
+        "android_client_info": {
+          "package_name": "com.evinram.informationrev2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "656875226817-dc79vpk0boj2l40e90j9ov09p86rvqhg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.evinram.informationrev2",
+            "certificate_hash": "7f1991ec19a88ac82d37d438d2e46af19e767b48"
+          }
+        },
+        {
+          "client_id": "656875226817-uskqqagt46h6fif5f2mh2ubg99jop6v4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTtTeQXeYJ3ySOOIHR7bkgsFier51VnIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656875226817-uskqqagt46h6fif5f2mh2ubg99jop6v4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

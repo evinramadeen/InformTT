@@ -52,7 +52,7 @@ public class FavoritesActivity extends AppCompatActivity
                 Intent intent = new Intent(FavoritesActivity.this,FullDescription.class);
                 intent.putExtra("main_category",ApplicationClass.favorites.get(position).getMain_category());
                 intent.putExtra("sub_category", ApplicationClass.favorites.get(position).getSub_category());
-                intent.putExtra("full_description",ApplicationClass.favorites.get(position).getFull_description());
+                intent.putExtra("full_description",ApplicationClass.favorites.get(position).getFull_description().toString());
                 startActivity(intent);
                 finish();
 

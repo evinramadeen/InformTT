@@ -65,7 +65,7 @@ public class MainCategories extends AppCompatActivity implements SingleChoiceDia
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 Intent intent = new Intent(MainCategories.this,SubCategories.class);
-                intent.putExtra("index",position);
+                //intent.putExtra("index",position);
                 intent.putExtra("main_category",ApplicationClass.categories.get(position).getMain_category());
                 startActivity(intent);
                 finish();
@@ -118,7 +118,8 @@ public class MainCategories extends AppCompatActivity implements SingleChoiceDia
                     public void handleResponse(Void response)
                     {
                         Toast.makeText(MainCategories.this, "User Successfully logged out.", Toast.LENGTH_SHORT).show();
-                        MainCategories.this.finish();
+                        //MainCategories.this.finish();
+                        finishAffinity();
 
                     }
 

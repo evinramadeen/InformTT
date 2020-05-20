@@ -18,8 +18,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
+//check in here, if the application class information is not being passed back in properly when you go into the full description, edit the favorite then go back out.
 public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
 {
     private Context context;
@@ -67,10 +70,10 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
                 break;
         }
         //puts the text on the sub category
-        final String mainCatHold = subCategories.get(position).getMain_category();
-        final String subNameHold= subCategories.get(position).getSub_category();
-        final String holdText=subCategories.get(position).getFull_description();
-        tvSubCategory.setText(subCategories.get(position).getSub_category());
+        final String mainCatHold = ApplicationClass.subCategories.get(position).getMain_category();
+        final String subNameHold= ApplicationClass.subCategories.get(position).getSub_category();
+        final String holdText=ApplicationClass.subCategories.get(position).getFull_description().toString();
+        tvSubCategory.setText(ApplicationClass.subCategories.get(position).getSub_category());
         //tvSubDescription.setText(subCategories.get(position).getFull_description());this is the original way of setting the description without see more
 
         //creates the on click function to show the subcategory description
@@ -111,9 +114,9 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
                 intents.putExtra("main_category",mainCatHold);
                 intents.putExtra("sub_category", subNameHold);
                 intents.putExtra("full_description",holdText);
-                intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK); //flag activity clear task is used to basically end this activity.
                 context.startActivity(intents);
-                ((Activity)context).finish();//This is how i end an activity in an adapter. Had to typecast it too an activity so that i could use the finish class.
+               // ((Activity)context).finish();//This is how i end an activity in an adapter. Had to typecast it too an activity so that i could use the finish class.
             }
         };
 

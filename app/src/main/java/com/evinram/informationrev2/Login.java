@@ -19,6 +19,10 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.local.UserIdStorageFactory;
+import com.backendless.push.DeviceRegistrationResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Login extends AppCompatActivity
 {
@@ -83,6 +87,25 @@ public class Login extends AppCompatActivity
                         {
                             ApplicationClass.user = response; //this is what we do to link the user to their own tables basically. I am using this for the favorites feature
                             Toast.makeText(Login.this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
+
+                            //Below is the piece of code used to register devices so that I can send push notifications when required.
+                            List<String> channels = new ArrayList<String>();
+                            channels.add("default");
+                            Backendless.Messaging.registerDevice(channels, new AsyncCallback<DeviceRegistrationResult>()
+                            {
+                                @Override
+                                public void handleResponse(DeviceRegistrationResult response)
+                                {
+                                    Toast.makeText(Login.this,"Device Registered Successfully", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void handleFault(BackendlessFault fault)
+                                {
+                                    Toast.makeText(Login.this, "Error Registering: "+fault.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
 
                             startActivity(new Intent(Login.this, MainCategories.class));
 
