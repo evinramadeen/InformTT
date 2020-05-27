@@ -72,7 +72,7 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
         //puts the text on the sub category
         final String mainCatHold = ApplicationClass.subCategories.get(position).getMain_category();
         final String subNameHold= ApplicationClass.subCategories.get(position).getSub_category();
-        final String holdText=ApplicationClass.subCategories.get(position).getFull_description().toString();
+        final String holdText=ApplicationClass.subCategories.get(position).getFull_description();
         tvSubCategory.setText(ApplicationClass.subCategories.get(position).getSub_category());
         //tvSubDescription.setText(subCategories.get(position).getFull_description());this is the original way of setting the description without see more
 
@@ -97,7 +97,7 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
         int textLength=0;
         String dispText="";
 
-        textLength=holdText.length();
+        textLength=25;//increase this when tables are populated
         dispText = holdText.substring(0,textLength)+"... See More"; //this is only for testing, when large description is entered, use a value of 75 instead of textLength.
 
 
@@ -116,7 +116,6 @@ public class SubCategoryAdapter extends ArrayAdapter<SubCategory>
                 intents.putExtra("full_description",holdText);
                 intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK); //flag activity clear task is used to basically end this activity.
                 context.startActivity(intents);
-               // ((Activity)context).finish();//This is how i end an activity in an adapter. Had to typecast it too an activity so that i could use the finish class.
             }
         };
 

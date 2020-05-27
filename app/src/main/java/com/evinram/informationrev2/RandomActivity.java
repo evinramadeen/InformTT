@@ -15,6 +15,9 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -43,6 +46,7 @@ public class RandomActivity extends AppCompatActivity
     private TextView tvLoad;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -51,94 +55,49 @@ public class RandomActivity extends AppCompatActivity
 
         btnNothing = findViewById(R.id.btnNothing);
         //TextView tvTest = findViewById(R.id.tvTest);
-        final TextView tvTest = findViewById(R.id.tvTest);
         //tvSeeMore = findViewById(R.id.tvSeeMore);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         tvLoad = findViewById(R.id.tvLoad);
 
-        radioGroup = findViewById(R.id.radioText);
+        WebView myWebView = (WebView) findViewById(R.id.wvDocument);
+        myWebView.setWebViewClient(new AppWebViewClients());
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        //myWebView.getSettings().setUseWideViewPort(true);
+        myWebView.loadUrl("https://drive.google.com/open?id=1hweUU7pAvd5emRak5s9-lOpY5e5WN6yc");
+        //myWebView.loadUrl("https://docs.google.com/viewer?url=https://drive.google.com/drive/my-drive");
+        //myWebView.loadUrl("https://drive.google.com/file/d/1i6RgJHG1Z6IFA6rn0KBiE9qXC7bciNRu/view?usp=sharing");
+
+
 
         btnNothing.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                int selectedId = radioGroup.getCheckedRadioButtonId();
-                radioButton = findViewById(selectedId);
-                Toast.makeText(RandomActivity.this, "button id: "+selectedId+"button text "+radioButton.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
+                        }
         });
 
 
 
-
-        //Below is the original spanning string text for the implementation of the see more function
-        /*//final String text ="Not many characters";
-        final String text = "I tend to shy away from restaurant chains, but wherever I go, PF Chang&apos;s has solidly good food and, like Starbucks, they&apos;re reliable. We were staying in Boston for a week and after a long day and blah blah blah blah...";
-        String dispText ="";
-        int textLength=0;
-
-        int orientation = getResources().getConfiguration().orientation;
-        if(orientation == Configuration.ORIENTATION_LANDSCAPE && text.length()>100)
-        {
-            dispText=text.substring(0,100) + "... see More";
-            spanning=Boolean.TRUE;
-
-        }
-        else if(orientation == Configuration.ORIENTATION_PORTRAIT && text.length()>50)
-        {
-
-            dispText=text.substring(0,50) + "... see More";
-            spanning=Boolean.TRUE;
-        }
-
-        else
-        {
-            dispText=text;
-            spanning=Boolean.FALSE;
-
-        }
-
-        if(spanning=Boolean.TRUE)
-        {
-            SpannableString ss = new SpannableString(dispText);
-
-            ClickableSpan clickableSpan = new ClickableSpan()
-            {
-                @Override
-                public void onClick(@NonNull View widget)
-                {
-                    Toast.makeText(RandomActivity.this, "Click Registered. Start New Activity", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(RandomActivity.this, FullDescription.class));
-
-                }
-            };
-
-            if(orientation==Configuration.ORIENTATION_PORTRAIT)
-            {
-                ss.setSpan(clickableSpan,50,62, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-            else if(orientation==Configuration.ORIENTATION_LANDSCAPE)
-            {
-                ss.setSpan(clickableSpan,100,112, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-
-            tvTest.setText(ss);
-            tvTest.setMovementMethod(LinkMovementMethod.getInstance());
-
-        }
-        else
-        {
-            tvTest.setText(text);
-        }*/
-
-
-
-
-
-
     }
+    public class AppWebViewClients extends WebViewClient
+    {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url)
+        {
+            view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url)
+        {
+            super.onPageFinished(view, url);
+        }
+    }
+
+
 
     /**
      * Shows the progress UI and hides the login form.
