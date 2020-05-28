@@ -14,6 +14,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -28,23 +29,28 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.files.BackendlessFile;
 import com.backendless.persistence.DataQueryBuilder;
 
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 public class RandomActivity extends AppCompatActivity
 {
-    Button btnNothing;
-    TextView tvSeeMore;
-    private RadioGroup radioGroup;
-    private RadioButton radioButton;
+    private static final String TAG = "";
     Boolean spanning=Boolean.FALSE;
     private View mProgressView;
     private View mLoginFormView;
     private TextView tvLoad;
 
+    private WebView myWebView;
 
 
     @Override
@@ -53,48 +59,71 @@ public class RandomActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_random);
 
-        btnNothing = findViewById(R.id.btnNothing);
-        //TextView tvTest = findViewById(R.id.tvTest);
-        //tvSeeMore = findViewById(R.id.tvSeeMore);
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         tvLoad = findViewById(R.id.tvLoad);
 
-        WebView myWebView = (WebView) findViewById(R.id.wvDocument);
-        myWebView.setWebViewClient(new AppWebViewClients());
-        myWebView.getSettings().setJavaScriptEnabled(true);
-        //myWebView.getSettings().setUseWideViewPort(true);
-        myWebView.loadUrl("https://drive.google.com/open?id=1hweUU7pAvd5emRak5s9-lOpY5e5WN6yc");
-        //myWebView.loadUrl("https://docs.google.com/viewer?url=https://drive.google.com/drive/my-drive");
-        //myWebView.loadUrl("https://drive.google.com/file/d/1i6RgJHG1Z6IFA6rn0KBiE9qXC7bciNRu/view?usp=sharing");
+        myWebView = findViewById(R.id.wvDocument);
+
+        loadHTMLPage();
+        BackendlessFile file = new BackendlessFile("https://backendlessappcontent.com/734ACFB0-309D-78CE-FF65-7C0903FC2500/66337CF9-D54C-4FD5-B60F-6715A2121A7C/files/sub_categories/Test.html");
+
+        //downloadFile("https://backendlessappcontent.com/734ACFB0-309D-78CE-FF65-7C0903FC2500/66337CF9-D54C-4FD5-B60F-6715A2121A7C/files/");
 
 
-
-        btnNothing.setOnClickListener(new View.OnClickListener()
+        try
         {
-            @Override
-            public void onClick(View v)
-            {
-                        }
-        });
-
+            downloadFile(file);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
 
 
     }
-    public class AppWebViewClients extends WebViewClient
-    {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url)
-        {
-            view.loadUrl(url);
-            return true;
-        }
 
-        @Override
-        public void onPageFinished(WebView view, String url)
-        {
-            super.onPageFinished(view, url);
+
+    public static void downloadFile(BackendlessFile backendlessFile) throws IOException {
+        URL url = new URL(backendlessFile.getFileURL());
+        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        int responseCode = httpConn.getResponseCode();
+
+        // always check HTTP response code first
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            // opens input stream from the HTTP connection
+            InputStream inputStream = httpConn.getInputStream();
+
+            InputStreamReader inputStreamReader = new InputStreamReader((inputStream));
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            Log.i(TAG, "File content is:\n===========================");
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                Log.i(TAG, line);
+            }
+
+            Log.i(TAG, "===========================");
+
+            inputStream.close();
+            bufferedReader.close();
+            inputStreamReader.close();
+
+            Log.i(TAG, "File downloaded");
+        } else {
+            Log.i(TAG, "No file to download. Server replied HTTP code: " + responseCode);
         }
+        httpConn.disconnect();
+    }
+
+
+
+
+    private void loadHTMLPage()
+    {
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.loadUrl("file:///android_asset/index.html");
     }
 
 

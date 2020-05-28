@@ -15,4 +15,10 @@
         android:icon="@drawable/text_size"
         app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/call_random"
+        android:title="@string/text_size"
+        android:orderInCategory="102"
+        android:icon="@drawable/web_views"
+        app:showAsAction="ifRoom"/>
+
 </menu>

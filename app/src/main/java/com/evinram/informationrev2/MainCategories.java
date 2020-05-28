@@ -172,6 +172,10 @@ public class MainCategories extends AppCompatActivity implements SingleChoiceDia
                 singleChoiceDialog.setCancelable(false);
                 singleChoiceDialog.show(getSupportFragmentManager(),"Single Choice Dialog");
                 break;
+        //be sure to remove this after I am done testing the download and display html.
+            case R.id.call_random:
+                startActivity(new Intent(MainCategories.this, RandomActivity.class));
+
         }
         return super.onOptionsItemSelected(item);
     }
